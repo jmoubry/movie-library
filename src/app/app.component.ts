@@ -4,15 +4,19 @@ import { Component } from '@angular/core';
   selector: 'my-app',
   template: `
     <h1>{{name}}</h1>
-    <h2>{{movie.title}} Details</h2>
     <h2>My Movies</h2>
     <ul class="movies">
-      <li *ngFor="let movie of movies">
+      <li *ngFor="let movie of movies"
+          (click)="onSelect(movie)"
+          [class.selected]="movie === selectedMovie">
         <span class="badge">{{movie.id}}</span> {{movie.title}}
       </li>
     </ul>
-    <div><label>ID: </label>{{movie.id}}</div>
-    <div><label>Title: </label><input [(ngModel)]="movie.title" placeholder="Title"></div>
+    <div *ngIf="selectedMovie">
+      <h2>{{selectedMovie.title}} Details</h2>
+      <div><label>ID: </label>{{selectedMovie.id}}</div>
+      <div><label>Title: </label><input [(ngModel)]="selectedMovie.title" placeholder="Title"></div>
+    </div>
     `,
     styles: [`
       .selected {
@@ -67,10 +71,10 @@ import { Component } from '@angular/core';
 export class AppComponent  {
   name = 'Movie Library';
   movies = MOVIES;
-  movie: Movie = {
-    id: 1,
-    title: 'Beauty and the Beast'
-  };
+  selectedMovie: Movie;
+  onSelect(movie: Movie): void {
+    this.selectedMovie = movie;
+  }
 }
 export class Movie {
   id: number;
