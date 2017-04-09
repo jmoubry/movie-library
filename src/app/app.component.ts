@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
 import { Movie } from './movie';
+import { MovieService } from './movie.service';
 
 @Component({
   selector: 'my-app',
@@ -63,21 +65,26 @@ import { Movie } from './movie';
         margin-right: .8em;
         border-radius: 4px 0 0 4px;
       }
-    `]
+    `],
+    providers: [MovieService]
 })
 
-export class AppComponent  {
+export class AppComponent implements OnInit {
   name = 'Movie Library';
-  movies = MOVIES;
+  movies: Movie[];
   selectedMovie: Movie;
+
+  constructor(private movieService: MovieService) { }
+
+  ngOnInit(): void {
+    this.getMovies();
+  }
+
+  getMovies(): void {
+    this.movieService.getMovies().then(movies => this.movies = movies);
+  }
+
   onSelect(movie: Movie): void {
     this.selectedMovie = movie;
   }
 }
-
-const MOVIES: Movie[] = [
-  { id: 11, title: 'Passengers' },
-  { id: 12, title: 'Arrival' },
-  { id: 13, title: 'Superman vs. Batman' },
-  { id: 14, title: 'Lost in Translation' },
-];
