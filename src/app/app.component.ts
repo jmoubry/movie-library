@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Movie } from './movie';
 
 @Component({
   selector: 'my-app',
@@ -12,11 +13,7 @@ import { Component } from '@angular/core';
         <span class="badge">{{movie.id}}</span> {{movie.title}}
       </li>
     </ul>
-    <div *ngIf="selectedMovie">
-      <h2>{{selectedMovie.title}} Details</h2>
-      <div><label>ID: </label>{{selectedMovie.id}}</div>
-      <div><label>Title: </label><input [(ngModel)]="selectedMovie.title" placeholder="Title"></div>
-    </div>
+    <movie-detail [movie]="selectedMovie"></movie-detail>
     `,
     styles: [`
       .selected {
@@ -68,6 +65,7 @@ import { Component } from '@angular/core';
       }
     `]
 })
+
 export class AppComponent  {
   name = 'Movie Library';
   movies = MOVIES;
@@ -75,10 +73,6 @@ export class AppComponent  {
   onSelect(movie: Movie): void {
     this.selectedMovie = movie;
   }
-}
-export class Movie {
-  id: number;
-  title: string;
 }
 
 const MOVIES: Movie[] = [
